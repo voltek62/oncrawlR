@@ -159,12 +159,12 @@ oncrawlTrainModel <- function(dataset, nround=300, verbose=1) {
                              ,-.data$title
                              ,-.data$h1
                              ,-.data$fetch_date
-                             ,-contains("urlpath")
-                             ,-contains("hreflang_")
-                             ,-contains("meta_")
-                             ,-contains("is_")
-                             ,-contains("redirect_")
-                             ,-contains("twc_")
+                             ,-dplyr::contains("urlpath")
+                             ,-dplyr::contains("hreflang_")
+                             ,-dplyr::contains("meta_")
+                             ,-dplyr::contains("is_")
+                             ,-dplyr::contains("redirect_")
+                             ,-dplyr::contains("twc_")
   )
 
 
