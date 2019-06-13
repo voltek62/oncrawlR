@@ -7,7 +7,7 @@
 listPages(crawlId)
 }
 \arguments{
-\item{:}{crawlID}
+\item{crawlId}{ID of your crawl}
 }
 \value{
 Json
@@ -27,7 +27,7 @@ ResCode
 }
 \examples{
 \dontrun{
-pages <- listPages(crawlID)
+pages <- listPages(crawlId)
 }
 }
 \author{

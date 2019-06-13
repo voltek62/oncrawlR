@@ -1,6 +1,7 @@
 #' Cluster URLs
 #'
-#' @details
+#' @param list_urls your urls
+#' @param namefile the filename for the CSV export
 #'
 #' @examples
 #' \dontrun{
@@ -50,10 +51,8 @@ oncrawlCreateSegmentation <- function(list_urls, namefile) {
       # iterate with each candidates
       for (j in candidates) {
 
-        print(paste0("debug: ",cat," ",list_urls[j]," ",cat!=list_urls[j]))
-
         if (cat!=list_urls[j]) {
-          listCandidates <- list.append(listCandidates, list(field= c("urlpath","not_startswith",list_urls[j])))
+          listCandidates <- rlist::list.append(listCandidates, list(field= c("urlpath","not_startswith",list_urls[j])))
         }
 
       }
@@ -67,12 +66,12 @@ oncrawlCreateSegmentation <- function(list_urls, namefile) {
 
     }
 
-    newlist <- list.append(newlist,temp)
+    newlist <- rlist::list.append(newlist,temp)
     i <- i+1
   }
 
-  toJSON(newlist) %>%
-    write_lines(namefile)
+  json <- jsonlite::toJSON(newlist)
+  readr::write_lines(json,namefile)
 
   print("your json file is generated")
 
@@ -100,7 +99,8 @@ splitURL <- function(url) {
 
 #' Split URLs
 #'
-#' @details
+#' @param list_urls your urls
+#' @param limit the maximum of URLS you want
 #'
 #' @examples
 #' \dontrun{
@@ -123,7 +123,7 @@ oncrawlSplitURL <- function(list_urls, limit=15) {
   colnames(allUrlPath) <- c("url","freq")
 
   # respect your limit
-  top <- top_n(allUrlPath, limit)
+  top <- dplyr::top_n(allUrlPath, limit)
 
   return(top)
 
@@ -131,7 +131,9 @@ oncrawlSplitURL <- function(list_urls, limit=15) {
 
 #' Train XGBoost Model
 #'
-#' @details
+#' @param dataset your data frame
+#' @param nround number of iterations
+#' @param verbose display errors ?
 #'
 #' @examples
 #' \dontrun{
@@ -140,6 +142,9 @@ oncrawlSplitURL <- function(list_urls, limit=15) {
 #' @return data.frame
 #' @author Vincent Terrasi
 #' @export
+#' @importFrom stats predict
+#' @importFrom rlang .data
+#'
 oncrawlTrainModel <- function(dataset, nround=300, verbose=1) {
 
   #TODO: test if var crawl_hits_google
@@ -150,10 +155,10 @@ oncrawlTrainModel <- function(dataset, nround=300, verbose=1) {
 
   #create training dataset : predit hit_crawls
   dataset <- dplyr::select(dataset,
-                             -url
-                             ,-title
-                             ,-h1
-                             ,-fetch_date
+                             -.data$url
+                             ,-.data$title
+                             ,-.data$h1
+                             ,-.data$fetch_date
                              ,-contains("urlpath")
                              ,-contains("hreflang_")
                              ,-contains("meta_")
@@ -184,22 +189,22 @@ oncrawlTrainModel <- function(dataset, nround=300, verbose=1) {
 
   # wt = without target
   X_wt <- dplyr::select(X,
-                        -crawl_hits,
-                        -crawl_hits_google,
-                        -crawl_hits_google_smartphone,
-                        -crawl_hits_google_web_search
+                        -.data$crawl_hits,
+                        -.data$crawl_hits_google,
+                        -.data$crawl_hits_google_smartphone,
+                        -.data$crawl_hits_google_web_search
   )
 
   # wt = without target
   X_test_wt <- dplyr::select(X_test,
-                             -crawl_hits,
-                             -crawl_hits_google,
-                             -crawl_hits_google_smartphone,
-                             -crawl_hits_google_web_search
+                             -.data$crawl_hits,
+                             -.data$crawl_hits_google,
+                             -.data$crawl_hits_google_smartphone,
+                             -.data$crawl_hits_google_web_search
   )
 
   # create the model
-  model <- xgboost(data = data.matrix(X_wt),
+  model <- xgboost::xgboost(data = data.matrix(X_wt),
                    label = data.matrix(y),
                    eta = 0.1,
                    max_depth = 10,
@@ -212,41 +217,47 @@ oncrawlTrainModel <- function(dataset, nround=300, verbose=1) {
   y_pred <- predict(model, data.matrix(X_test_wt))
 
   # display confusion matrix
-  matrix <- confusionMatrix(as.factor(round(y_pred)), as.factor(y_test))
+  matrix <- caret::confusionMatrix(as.factor(round(y_pred)), as.factor(y_test))
   print(matrix)
 
   # dispaly roc curb
-  p1 <- plot(roc(y_test, y_pred))
+  p1 <- plot(pROC::roc(y_test, y_pred))
   print(p1)
 
   return(list(model=model,x=data.matrix(X_wt),y=data.matrix(y)))
 
 }
 
-#' Explain XGBoost Model
+#' Explain XGBoost Model by plotting each importance variables
 #'
-#' @details
+#' @param model your XgBoost model
+#' @param x your training data
+#' @param y your predicted data
+#' @param max the number of importance variable you want to explain
 #'
 #' @examples
 #' \dontrun{
 #' oncrawlExplainModel(DF)
 #' }
-#' @return data.frame
+#' @return graphs
 #' @author Vincent Terrasi
 #' @export
+#' @importFrom graphics plot title
+#' @importFrom rlang .data
+#'
 oncrawlExplainModel <- function(model, x, y, max=10) {
 
-  explainer_xgb <- explain(model,
+  explainer_xgb <- DALEX::explain(model,
                            data = data.matrix(x),
                            y = data.matrix(y),
                            label = "xgboost")
 
   #print importance variables
-  vd_xgb <- variable_importance(explainer_xgb, type = "raw")
+  vd_xgb <- DALEX::variable_importance(explainer_xgb, type = "raw")
   print(plot(vd_xgb))
   #TODO : ggsave
 
-  variables <- dplyr::arrange(vd_xgb, -dropout_loss)
+  variables <- dplyr::arrange(vd_xgb, -vd_xgb$dropout_loss)
 
   variables <- as.character(variables$variable)
 
@@ -254,7 +265,7 @@ oncrawlExplainModel <- function(model, x, y, max=10) {
   # avoid the first row
   for(i in 2:(max+1)) {
 
-    sv_xgb_satisfaction  <- single_variable(explainer_xgb,
+    sv_xgb_satisfaction  <- DALEX::single_variable(explainer_xgb,
                                             variable = variables[i],
                                             type = "pdp")
 

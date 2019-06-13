@@ -1,12 +1,14 @@
 #' List all projects
 #'
+#' @param limit number of projects
+#'
 #' @details
 #'
 #' ResCode
 #' 400 : Returned when the request has incompatible values or does not match the API specification.
 #' 401 : Returned when the request is not authenticated.
 #' 403 : Returned the current quota does not allow the action to be performed.
-#' 404 : Returned when any of resource(s) referred in the request is not found.
+#' 404 : Returned when any of resources referred in the request is not found.
 #' 403 : Returned when the request is authenticated but the action is not allowed.
 #' 409 : Returned when the requested operation is not allowed for current state of the resource.
 #' 500 : Internal error
@@ -30,7 +32,7 @@ listProjects <- function(limit=100) {
       return()
   }
 
-  curl <- getCurlHandle()
+  curl <- RCurl::getCurlHandle()
 
   hdr  <- c(Accept="application/json"
             ,Authorization=paste("Bearer",KEY)
@@ -38,15 +40,15 @@ listProjects <- function(limit=100) {
 
   projectAPI <- paste0(API,"projects?limit=",limit)
 
-  reply <- getURL(projectAPI,
+  reply <- RCurl::getURL(projectAPI,
                   httpheader = hdr,
                   curl = curl,
                   verbose = DEBUG)
 
-  info <- getCurlInfo(curl)
+  info <- RCurl::getCurlInfo(curl)
 
   if (info$response.code==200) {
-    res <- fromJSON(reply)
+    res <- jsonlite::fromJSON(reply)
     print("ok")
   } else {
     print("error")

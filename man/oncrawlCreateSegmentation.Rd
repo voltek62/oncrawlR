@@ -6,14 +6,16 @@
 \usage{
 oncrawlCreateSegmentation(list_urls, namefile)
 }
+\arguments{
+\item{list_urls}{your urls}
+
+\item{namefile}{the filename for the CSV export}
+}
 \value{
 data.frame
 }
 \description{
 Cluster URLs
-}
-\details{
-
 }
 \examples{
 \dontrun{

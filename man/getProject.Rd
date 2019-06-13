@@ -7,7 +7,7 @@
 getProject(projectId)
 }
 \arguments{
-\item{projectId}{Id of your guide}
+\item{projectId}{Id of your project}
 }
 \value{
 Json

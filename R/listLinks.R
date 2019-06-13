@@ -1,6 +1,6 @@
 #' List all links from a crawl
 #'
-#' @param : crawlID
+#' @param crawlId ID of your crawl
 #'
 #' @details
 #'
@@ -15,7 +15,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' pages <- listLinks(crawlID)
+#' pages <- listLinks(crawlId)
 #' }
 #' @return Json
 #' @author Vincent Terrasi
@@ -32,17 +32,15 @@ listLinks <- function(crawlId) {
       return()
   }
 
-  curl <- getCurlHandle()
+  curl <- RCurl::getCurlHandle()
 
   pageAPI <- paste0(API,"data/crawl/", crawlId,"/links", sep = "")
-
-  curl <- getCurlHandle()
 
   hdr  <- c('Content-Type'="application/json"
             ,Authorization=paste("Bearer",KEY)
   )
 
-  jsonbody <- toJSON(list("fields"=c(
+  jsonbody <- jsonlite::toJSON(list("fields"=c(
                   "origin",
                   #"origin_ext",
                   #"origin_first_path",
@@ -69,13 +67,13 @@ listLinks <- function(crawlId) {
                 ),
                 export=TRUE))
 
-  reply <- postForm(pageAPI,
+  reply <- RCurl::postForm(pageAPI,
                     .opts=list(httpheader=hdr, postfields=jsonbody),
                     curl = curl,
                     style = "POST"
   )
 
-  info <- getCurlInfo(curl)
+  info <- RCurl::getCurlInfo(curl)
 
   if (info$response.code==200) {
     # return ok if response.code==200

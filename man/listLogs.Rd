@@ -7,7 +7,7 @@
 listLogs(projectId)
 }
 \arguments{
-\item{:}{projectID}
+\item{projectId}{ID of your project}
 }
 \value{
 Json
@@ -20,14 +20,14 @@ ResCode
 400 : Returned when the request has incompatible values or does not match the API specification.
 401 : Returned when the request is not authenticated.
 403 : Returned the current quota does not allow the action to be performed.
-404 : Returned when any of resource(s) referred in the request is not found.
+404 : Returned when any of resources referred in the request is not found.
 403 : Returned when the request is authenticated but the action is not allowed.
 409 : Returned when the requested operation is not allowed for current state of the resource.
 500 : Internal error
 }
 \examples{
 \dontrun{
-pages <- listLogs(projectID)
+pages <- listLogs(projectId)
 }
 }
 \author{

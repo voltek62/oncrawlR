@@ -7,7 +7,7 @@
 listLinks(crawlId)
 }
 \arguments{
-\item{:}{crawlID}
+\item{crawlId}{ID of your crawl}
 }
 \value{
 Json
@@ -27,7 +27,7 @@ ResCode
 }
 \examples{
 \dontrun{
-pages <- listLinks(crawlID)
+pages <- listLinks(crawlId)
 }
 }
 \author{

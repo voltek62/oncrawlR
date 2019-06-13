@@ -1,14 +1,14 @@
 Package: oncrawlR
 Type: Package
-Title: OncrawlR
-Version: 0.1.0
+Title: oncrawlR
+Version: 0.1.1
 Author: Vincent Terrasi
 Maintainer: Agent V <vincent@data-seo.com>
-Description: The Oncrawl R Package provides valuable informations on the status of any web page by measuring its content :
-    SEO tags, duplicate and near duplicate content, structured data, social metas, linking… and many other amazing things.
-    Get a real full SEO report: useful to detect errors on a page and optimise it.
-    More info : http://developer.oncrawl.com
-License: MIT
+Description: 
+    The Oncrawl R Package provides valuable informations on the status of any web page by measuring its content : SEO tags, duplicate and near duplicate content, structured data, social metas, linking… and many other amazing things. 
+    Get a real full SEO report: useful to detect errors on a page and optimise it. 
+    More info : http://developer.oncrawl.com.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends:
@@ -16,7 +16,15 @@ Depends:
 Imports:
     RCurl (>= 1.8),
     jsonlite (>= 1.6),
-    dplyr (>= 0.7)
+    dplyr (>= 0.7),
+    xgboost (>= 0.8),
+    pROC (>= 1.1),
+    ggplot2 (>= 3.1),
+    caret (>= 6.0),
+    DALEX (>= 0.3),
+    rlist (>= 0.4.6),
+    readr (>= 1.3),
+    rlang (>= 0.3)
 Suggests:
     devtools (>= 1.12.0),
     testthat

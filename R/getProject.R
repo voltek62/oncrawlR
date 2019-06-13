@@ -1,6 +1,6 @@
 #' Get a project
 #'
-#' @param projectId Id of your guide
+#' @param projectId Id of your project
 #'
 #' @details
 #' http://developer.oncrawl.com/#List-projects
@@ -38,7 +38,7 @@ getProject <- function(projectId) {
       return()
   }
 
-  curl <- getCurlHandle()
+  curl <- RCurl::getCurlHandle()
 
   hdr  <- c(Accept="application/json"
             ,Authorization=paste("Bearer",KEY)
@@ -46,16 +46,16 @@ getProject <- function(projectId) {
 
   projectAPI <- paste0(API,"projects/",projectId)
 
-  reply <- getURL(projectAPI,
+  reply <- RCurl::getURL(projectAPI,
                   httpheader = hdr,
                   curl = curl,
                   verbose = DEBUG)
 
-  info <- getCurlInfo(curl)
+  info <- RCurl::getCurlInfo(curl)
 
   if (info$response.code==200) {
     # return ok if response.code==200
-    res <- fromJSON(reply)
+    res <- jsonlite::fromJSON(reply)
     print("ok")
   } else {
     # return error if response.code!=200

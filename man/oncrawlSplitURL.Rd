@@ -6,14 +6,16 @@
 \usage{
 oncrawlSplitURL(list_urls, limit = 15)
 }
+\arguments{
+\item{list_urls}{your urls}
+
+\item{limit}{the maximum of URLS you want}
+}
 \value{
 data.frame
 }
 \description{
 Split URLs
-}
-\details{
-
 }
 \examples{
 \dontrun{

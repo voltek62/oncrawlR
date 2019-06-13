@@ -7,6 +7,8 @@
 #' @return ok
 #' @author Vincent Terrasi
 #' @export
+#' @importFrom utils read.csv read.delim
+#'
 initAPI <- function() {
 
   API <- "https://app.oncrawl.com/api/v2/"

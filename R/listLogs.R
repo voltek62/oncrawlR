@@ -1,6 +1,6 @@
 #' List all pages from logs monitoring
 #'
-#' @param : projectID
+#' @param projectId ID of your project
 #'
 #' @details
 #'
@@ -8,14 +8,14 @@
 #' 400 : Returned when the request has incompatible values or does not match the API specification.
 #' 401 : Returned when the request is not authenticated.
 #' 403 : Returned the current quota does not allow the action to be performed.
-#' 404 : Returned when any of resource(s) referred in the request is not found.
+#' 404 : Returned when any of resources referred in the request is not found.
 #' 403 : Returned when the request is authenticated but the action is not allowed.
 #' 409 : Returned when the requested operation is not allowed for current state of the resource.
 #' 500 : Internal error
 #'
 #' @examples
 #' \dontrun{
-#' pages <- listLogs(projectID)
+#' pages <- listLogs(projectId)
 #' }
 #' @return Json
 #' @author Vincent Terrasi
@@ -32,17 +32,15 @@ listLogs <- function(projectId) {
       return()
   }
 
-  curl <- getCurlHandle()
+  curl <- RCurl::getCurlHandle()
 
   pageAPI <- paste0(API,"data/project/", projectId,"/log_monitoring/pages", sep = "")
-
-  curl <- getCurlHandle()
 
   hdr  <- c('Content-Type'="application/json"
             ,Authorization=paste("Bearer",KEY)
   )
 
-  jsonbody <- toJSON(list("fields"=c(
+  jsonbody <- jsonlite::toJSON(list("fields"=c(
                                       "url",#"url_ext","url_first_path","url_has_params","url_host","url_is_resource",
                                       "urlpath",
                                       "crawl_hits",
@@ -65,13 +63,13 @@ listLogs <- function(projectId) {
                                      ),
                           export=TRUE))
 
-  reply <- postForm(pageAPI,
+  reply <- RCurl::postForm(pageAPI,
                     .opts=list(httpheader=hdr, postfields=jsonbody),
                     curl = curl,
                     style = "POST"
   )
 
-  info <- getCurlInfo(curl)
+  info <- RCurl::getCurlInfo(curl)
 
   if (info$response.code==200) {
     # return ok if response.code==200
