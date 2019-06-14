@@ -7,15 +7,14 @@
 initAPI()
 }
 \value{
-ok
+character if no error with API authentification
 }
 \description{
 Prepare Token for API calls
 }
 \examples{
-\dontrun{
 initAPI()
-}
+
 }
 \author{
 Vincent Terrasi

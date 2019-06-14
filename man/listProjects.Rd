@@ -16,6 +16,8 @@ Json
 List all projects
 }
 \details{
+<http://developer.oncrawl.com/#List-projects>
+
 ResCode
 400 : Returned when the request has incompatible values or does not match the API specification.
 401 : Returned when the request is not authenticated.
@@ -26,9 +28,9 @@ ResCode
 500 : Internal error
 }
 \examples{
-\dontrun{
+initAPI()
 projects <- listProjects()
-}
+
 }
 \author{
 Vincent Terrasi

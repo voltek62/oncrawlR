@@ -16,7 +16,7 @@ Json
 Get a crawl
 }
 \details{
-http://developer.oncrawl.com/#List-projects
+<http://developer.oncrawl.com/#Get-a-crawl>
 
 ResCode
 400 : Returned when the request has incompatible values or does not match the API specification.
@@ -30,9 +30,9 @@ ResCode
 The HTTP response is JSON object with a single crawl key containing the crawl’s data
 }
 \examples{
-\dontrun{
-project <- getCrawl("abcsdfghijkl12")
-}
+initAPI()
+project <- getCrawl("YOURCRAWLID")
+
 }
 \author{
 Vincent Terrasi

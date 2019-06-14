@@ -3,6 +3,7 @@
 #' @param limit number of projects
 #'
 #' @details
+#' <http://developer.oncrawl.com/#List-projects>
 #'
 #' ResCode
 #' 400 : Returned when the request has incompatible values or does not match the API specification.
@@ -14,9 +15,9 @@
 #' 500 : Internal error
 #'
 #' @examples
-#' \dontrun{
+#' initAPI()
 #' projects <- listProjects()
-#' }
+#'
 #' @return Json
 #' @author Vincent Terrasi
 #' @export
@@ -49,9 +50,8 @@ listProjects <- function(limit=100) {
 
   if (info$response.code==200) {
     res <- jsonlite::fromJSON(reply)
-    print("ok")
   } else {
-    print("error")
+    warning("error")
   }
 
   return(res)

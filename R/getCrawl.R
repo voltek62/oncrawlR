@@ -3,7 +3,7 @@
 #' @param crawlId Id of your crawl
 #'
 #' @details
-#' http://developer.oncrawl.com/#List-projects
+#' <http://developer.oncrawl.com/#Get-a-crawl>
 #'
 #' ResCode
 #' 400 : Returned when the request has incompatible values or does not match the API specification.
@@ -17,9 +17,9 @@
 #' The HTTP response is JSON object with a single crawl key containing the crawl’s data
 #'
 #' @examples
-#' \dontrun{
-#' project <- getCrawl("abcsdfghijkl12")
-#' }
+#' initAPI()
+#' project <- getCrawl("YOURCRAWLID")
+#'
 #' @return Json
 #' @author Vincent Terrasi
 #' @export
@@ -53,10 +53,8 @@ getCrawl <- function(crawlId) {
   if (info$response.code==200) {
     # return ok if response.code==200
     res <- jsonlite::fromJSON(reply)
-    print("ok")
   } else {
     # return error if response.code!=200
-    print(reply)
     return("error")
   }
 

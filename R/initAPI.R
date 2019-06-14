@@ -1,10 +1,9 @@
 #' Prepare Token for API calls
 #'
 #' @examples
-#' \dontrun{
 #' initAPI()
-#' }
-#' @return ok
+#'
+#' @return character if no error with API authentification
 #' @author Vincent Terrasi
 #' @export
 #' @importFrom utils read.csv read.delim
@@ -20,7 +19,7 @@ initAPI <- function() {
 
   if(!file.exists(path)){
 
-    print("Please, set your API Key in the file oncrawl_configuration.txt")
+    warning("Please, set your API Key in the file oncrawl_configuration.txt")
 
     fileConn<-file(path)
     writeLines(c("key = ","debug = FALSE", paste0("api = ",API)), fileConn)
@@ -33,7 +32,7 @@ initAPI <- function() {
 
   if (!exists("tab")) {
 
-    print("Please, set your API Key in the file oncrawl_configuration.txt")
+    warning("Please, set your API Key in the file oncrawl_configuration.txt")
 
     fileConn<-file(path)
     writeLines(c("key = ","debug = FALSE", paste0("api = ",API)), fileConn)
@@ -57,7 +56,7 @@ initAPI <- function() {
   token <- getOption('oncrawl_token')
 
   if(nchar(token)<=10) {
-    print("Please, set your API Key in the file oncrawl_configuration.txt")
+    warning("Please, set your API Key in the file oncrawl_configuration.txt")
     return("error")
   }
 

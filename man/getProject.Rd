@@ -16,7 +16,7 @@ Json
 Get a project
 }
 \details{
-http://developer.oncrawl.com/#List-projects
+<http://developer.oncrawl.com/#Get-a-project>
 
 ResCode
 400 : Returned when the request has incompatible values or does not match the API specification.
@@ -33,9 +33,9 @@ The HTTP response is JSON object with three keys:
 - A crawls key with a list of all project’s crawl.
 }
 \examples{
-\dontrun{
-project <- getProject(12)
-}
+initAPI()
+project <- getProject(YOURPROJECTID)
+
 }
 \author{
 Vincent Terrasi

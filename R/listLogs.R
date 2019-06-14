@@ -3,6 +3,7 @@
 #' @param projectId ID of your project
 #'
 #' @details
+#' <http://developer.oncrawl.com/#Data-types>
 #'
 #' ResCode
 #' 400 : Returned when the request has incompatible values or does not match the API specification.
@@ -14,9 +15,8 @@
 #' 500 : Internal error
 #'
 #' @examples
-#' \dontrun{
-#' pages <- listLogs(projectId)
-#' }
+#' pages <- listLogs(YOURPROJECTID)
+#'
 #' @return Json
 #' @author Vincent Terrasi
 #' @export
@@ -74,11 +74,9 @@ listLogs <- function(projectId) {
   if (info$response.code==200) {
     # return ok if response.code==200
     csv <- read.csv(text = readLines(textConnection(reply)), sep = ";", header = TRUE)
-    print("ok")
   } else {
     # return error if response.code!=200
-    print(reply)
-    return("error")
+    warning(reply)
   }
 
   return(csv)

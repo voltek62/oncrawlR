@@ -8,7 +8,7 @@ This API uses a basic authentication with an API key.
 
 NB : To get this API key, you need to have a Oncrawl [Business plan](https://www.oncrawl.com/pricing-crawler/).
 
-The script is explained step by step on my blog post "[Guide complet de l’API OncrawlR (package)](https://data-seo.com/cran-R-api-oncrawlR/)"
+The script is explained step by step on my blog post "[Guide complet de l’API OncrawlR (package)](https://data-seo.com)"
 
 
 ## Install

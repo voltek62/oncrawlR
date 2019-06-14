@@ -14,15 +14,18 @@ oncrawlTrainModel(dataset, nround = 300, verbose = 1)
 \item{verbose}{display errors ?}
 }
 \value{
-data.frame
+a list with your ML model, your training data
 }
 \description{
 Train XGBoost Model
 }
 \examples{
-\dontrun{
-oncrawlTrainModel(DF)
+\donttest{
+list <- oncrawlTrainModel(dataset)
+plot(list$roc)
+print(list$matrix)
 }
+
 }
 \author{
 Vincent Terrasi

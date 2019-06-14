@@ -18,9 +18,9 @@ data.frame
 Split URLs
 }
 \examples{
-\dontrun{
-oncrawlSplitURL(DF)
-}
+mylist <- c("/cat/domain/web/","/cat/","/cat/domain/")
+oncrawlSplitURL(mylist, 2)
+
 }
 \author{
 Vincent Terrasi

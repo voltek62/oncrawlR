@@ -3,7 +3,7 @@
 #' @param projectId Id of your project
 #'
 #' @details
-#' http://developer.oncrawl.com/#List-projects
+#' <http://developer.oncrawl.com/#Get-a-project>
 #'
 #' ResCode
 #' 400 : Returned when the request has incompatible values or does not match the API specification.
@@ -20,9 +20,9 @@
 #'- A crawls key with a list of all project’s crawl.
 #'
 #' @examples
-#' \dontrun{
-#' project <- getProject(12)
-#' }
+#' initAPI()
+#' project <- getProject(YOURPROJECTID)
+#'
 #' @return Json
 #' @author Vincent Terrasi
 #' @export
@@ -56,11 +56,9 @@ getProject <- function(projectId) {
   if (info$response.code==200) {
     # return ok if response.code==200
     res <- jsonlite::fromJSON(reply)
-    print("ok")
   } else {
     # return error if response.code!=200
-    print(reply)
-    return("error")
+    warning(reply)
   }
 
   return(res)

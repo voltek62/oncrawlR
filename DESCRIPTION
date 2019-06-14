@@ -1,13 +1,13 @@
 Package: oncrawlR
 Type: Package
-Title: oncrawlR
+Title: Machine Learning for SEO
 Version: 0.1.1
 Author: Vincent Terrasi
-Maintainer: Agent V <vincent@data-seo.com>
+Maintainer: Vincent Terrasi <vincent@data-seo.com>
 Description: 
-    The Oncrawl R Package provides valuable informations on the status of any web page by measuring its content : SEO tags, duplicate and near duplicate content, structured data, social metas, linking… and many other amazing things. 
+    Provides valuable informations on the status of any web page by measuring its content : SEO tags, duplicate and near duplicate content, structured data, social metas, linking… and many other amazing things. 
     Get a real full SEO report: useful to detect errors on a page and optimise it. 
-    More info : http://developer.oncrawl.com.
+    More info : <http://developer.oncrawl.com>
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

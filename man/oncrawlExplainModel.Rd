@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{oncrawlExplainModel}
 \alias{oncrawlExplainModel}
-\title{Explain XGBoost Model by plotting each importance variables}
+\title{Explain XGBoost Model by displaying each importance variables}
 \usage{
 oncrawlExplainModel(model, x, y, max = 10)
 }
@@ -19,11 +19,12 @@ oncrawlExplainModel(model, x, y, max = 10)
 graphs
 }
 \description{
-Explain XGBoost Model by plotting each importance variables
+Explain XGBoost Model by displaying each importance variables
 }
 \examples{
-\dontrun{
-oncrawlExplainModel(DF)
+\donttest{
+list <- oncrawlTrainModel(dataset,200)
+oncrawlExplainModel(list$model, list$x, list$y, 3)
 }
 }
 \author{

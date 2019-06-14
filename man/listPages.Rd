@@ -16,6 +16,8 @@ Json
 List all pages from a crawl
 }
 \details{
+<http://developer.oncrawl.com/#Data-types>
+
 ResCode
 400 : Returned when the request has incompatible values or does not match the API specification.
 401 : Returned when the request is not authenticated.
@@ -26,9 +28,8 @@ ResCode
 500 : Internal error
 }
 \examples{
-\dontrun{
-pages <- listPages(crawlId)
-}
+pages <- listPages(YOURCRAWLID)
+
 }
 \author{
 Vincent Terrasi

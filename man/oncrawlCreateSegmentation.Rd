@@ -2,25 +2,25 @@
 % Please edit documentation in R/utils.R
 \name{oncrawlCreateSegmentation}
 \alias{oncrawlCreateSegmentation}
-\title{Cluster URLs}
+\title{Transform a character array of URLs into JSON file for OnCrawl platform}
 \usage{
 oncrawlCreateSegmentation(list_urls, namefile)
 }
 \arguments{
 \item{list_urls}{your urls}
 
-\item{namefile}{the filename for the CSV export}
+\item{namefile}{the filename for the JSON export}
 }
 \value{
-data.frame
+JSON file
 }
 \description{
-Cluster URLs
+Transform a character array of URLs into JSON file for OnCrawl platform
 }
 \examples{
-\dontrun{
-cluster(DF)
-}
+mylist <- c("/cat/domain","/cat/")
+oncrawlCreateSegmentation(mylist,"test.json")
+
 }
 \author{
 Vincent Terrasi

@@ -1,20 +1,20 @@
-#' Cluster URLs
+#' Transform a character array of URLs into JSON file for OnCrawl platform
 #'
 #' @param list_urls your urls
-#' @param namefile the filename for the CSV export
+#' @param namefile the filename for the JSON export
 #'
 #' @examples
-#' \dontrun{
-#' cluster(DF)
-#' }
-#' @return data.frame
+#' mylist <- c("/cat/domain","/cat/")
+#' oncrawlCreateSegmentation(mylist,"test.json")
+#'
+#' @return JSON file
 #' @author Vincent Terrasi
 #' @export
 oncrawlCreateSegmentation <- function(list_urls, namefile) {
 
   #TODO:check dataset
   if(!is.character(list_urls)) {
-    print('the first argument must be a character array')
+    warning('the first argument must be a character array')
     return()
   }
 
@@ -24,7 +24,6 @@ oncrawlCreateSegmentation <- function(list_urls, namefile) {
 
   newlist <- list()
   max <- length(list_urls)
-  #print(paste0("max=",max))
 
   colors <- c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', '#ffffff', '#000000')
 
@@ -33,9 +32,7 @@ oncrawlCreateSegmentation <- function(list_urls, namefile) {
   for ( cat in list_urls ) {
 
     candidates <- grep(cat,list_urls)
-    print(cat)
     nbcandidates <- length(candidates)
-    print(nbcandidates)
 
     if (nbcandidates==1) {
       temp <- list(
@@ -73,7 +70,7 @@ oncrawlCreateSegmentation <- function(list_urls, namefile) {
   json <- jsonlite::toJSON(newlist)
   readr::write_lines(json,namefile)
 
-  print("your json file is generated")
+  warning("your json file is generated")
 
 }
 
@@ -103,9 +100,9 @@ splitURL <- function(url) {
 #' @param limit the maximum of URLS you want
 #'
 #' @examples
-#' \dontrun{
-#' oncrawlSplitURL(DF)
-#' }
+#' mylist <- c("/cat/domain/web/","/cat/","/cat/domain/")
+#' oncrawlSplitURL(mylist, 2)
+#'
 #' @return data.frame
 #' @author Vincent Terrasi
 #' @export
@@ -136,10 +133,13 @@ oncrawlSplitURL <- function(list_urls, limit=15) {
 #' @param verbose display errors ?
 #'
 #' @examples
-#' \dontrun{
-#' oncrawlTrainModel(DF)
+#' \donttest{
+#' list <- oncrawlTrainModel(dataset)
+#' plot(list$roc)
+#' print(list$matrix)
 #' }
-#' @return data.frame
+#'
+#' @return a list with your ML model, your training data
 #' @author Vincent Terrasi
 #' @export
 #' @importFrom stats predict
@@ -149,7 +149,7 @@ oncrawlTrainModel <- function(dataset, nround=300, verbose=1) {
 
   #TODO: test if var crawl_hits_google
   if (which("crawl_hits_google"==names(dataset))==0) {
-    print("You need logs data with a column named crawl_hit_data")
+    warning("You need logs data with a column named crawl_hit_data")
     return()
   }
 
@@ -218,17 +218,19 @@ oncrawlTrainModel <- function(dataset, nround=300, verbose=1) {
 
   # display confusion matrix
   matrix <- caret::confusionMatrix(as.factor(round(y_pred)), as.factor(y_test))
-  print(matrix)
 
-  # dispaly roc curb
-  p1 <- plot(pROC::roc(y_test, y_pred))
-  print(p1)
+  # display roc curb
+  roc <- pROC::roc(y_test, y_pred)
 
-  return(list(model=model,x=data.matrix(X_wt),y=data.matrix(y)))
+  return(list(model=model,
+              x=data.matrix(X_wt),
+              y=data.matrix(y),
+              matrix=matrix,
+              roc=roc))
 
 }
 
-#' Explain XGBoost Model by plotting each importance variables
+#' Explain XGBoost Model by displaying each importance variables
 #'
 #' @param model your XgBoost model
 #' @param x your training data
@@ -236,8 +238,9 @@ oncrawlTrainModel <- function(dataset, nround=300, verbose=1) {
 #' @param max the number of importance variable you want to explain
 #'
 #' @examples
-#' \dontrun{
-#' oncrawlExplainModel(DF)
+#' \donttest{
+#' list <- oncrawlTrainModel(dataset,200)
+#' oncrawlExplainModel(list$model, list$x, list$y, 3)
 #' }
 #' @return graphs
 #' @author Vincent Terrasi
@@ -254,11 +257,10 @@ oncrawlExplainModel <- function(model, x, y, max=10) {
 
   #print importance variables
   vd_xgb <- DALEX::variable_importance(explainer_xgb, type = "raw")
-  print(plot(vd_xgb))
-  #TODO : ggsave
+  vd_plot <- plot(vd_xgb)
+  ggplot2::ggsave("variable_importance.jpg",vd_plot)
 
   variables <- dplyr::arrange(vd_xgb, -vd_xgb$dropout_loss)
-
   variables <- as.character(variables$variable)
 
   # plot each importance variables
@@ -270,9 +272,10 @@ oncrawlExplainModel <- function(model, x, y, max=10) {
                                             type = "pdp")
 
     p <- plot(sv_xgb_satisfaction)
-    print(p)
-    #TODO : ggsave
+    ggplot2::ggsave(paste0("explain_",variables[i],".jpg"),p)
 
   }
+
+  return(vd_plot)
 
 }
