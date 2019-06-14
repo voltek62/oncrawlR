@@ -33,9 +33,10 @@ The HTTP response is JSON object with three keys:
 - A crawls key with a list of all project’s crawl.
 }
 \examples{
+\dontrun{
 initAPI()
 project <- getProject(YOURPROJECTID)
-
+}
 }
 \author{
 Vincent Terrasi

@@ -20,9 +20,10 @@
 #'- A crawls key with a list of all project’s crawl.
 #'
 #' @examples
+#' \dontrun{
 #' initAPI()
 #' project <- getProject(YOURPROJECTID)
-#'
+#' }
 #' @return Json
 #' @author Vincent Terrasi
 #' @export

@@ -17,8 +17,10 @@
 #' The HTTP response is JSON object with a single crawl key containing the crawl’s data
 #'
 #' @examples
+#' \dontrun{
 #' initAPI()
 #' project <- getCrawl("YOURCRAWLID")
+#' }
 #'
 #' @return Json
 #' @author Vincent Terrasi

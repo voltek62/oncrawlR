@@ -133,7 +133,7 @@ oncrawlSplitURL <- function(list_urls, limit=15) {
 #' @param verbose display errors ?
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' list <- oncrawlTrainModel(dataset)
 #' plot(list$roc)
 #' print(list$matrix)
@@ -238,7 +238,7 @@ oncrawlTrainModel <- function(dataset, nround=300, verbose=1) {
 #' @param max the number of importance variable you want to explain
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' list <- oncrawlTrainModel(dataset,200)
 #' oncrawlExplainModel(list$model, list$x, list$y, 3)
 #' }

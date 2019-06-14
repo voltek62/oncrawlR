@@ -28,7 +28,9 @@ ResCode
 500 : Internal error
 }
 \examples{
+\dontrun{
 pages <- listLinks(YOURCRAWLID)
+}
 
 }
 \author{

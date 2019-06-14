@@ -20,7 +20,7 @@ a list with your ML model, your training data
 Train XGBoost Model
 }
 \examples{
-\donttest{
+\dontrun{
 list <- oncrawlTrainModel(dataset)
 plot(list$roc)
 print(list$matrix)

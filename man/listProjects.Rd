@@ -28,8 +28,10 @@ ResCode
 500 : Internal error
 }
 \examples{
+\dontrun{
 initAPI()
 projects <- listProjects()
+}
 
 }
 \author{

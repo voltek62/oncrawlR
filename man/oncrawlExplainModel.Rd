@@ -22,7 +22,7 @@ graphs
 Explain XGBoost Model by displaying each importance variables
 }
 \examples{
-\donttest{
+\dontrun{
 list <- oncrawlTrainModel(dataset,200)
 oncrawlExplainModel(list$model, list$x, list$y, 3)
 }

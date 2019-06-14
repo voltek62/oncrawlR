@@ -15,8 +15,9 @@
 #' 500 : Internal error
 #'
 #' @examples
+#' \dontrun{
 #' pages <- listLogs(YOURPROJECTID)
-#'
+#' }
 #' @return Json
 #' @author Vincent Terrasi
 #' @export

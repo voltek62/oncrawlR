@@ -15,8 +15,10 @@
 #' 500 : Internal error
 #'
 #' @examples
+#' \dontrun{
 #' initAPI()
 #' projects <- listProjects()
+#' }
 #'
 #' @return Json
 #' @author Vincent Terrasi

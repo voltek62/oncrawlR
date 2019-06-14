@@ -15,7 +15,9 @@
 #' 500 : Internal error
 #'
 #' @examples
+#' \dontrun{
 #' pages <- listPages(YOURCRAWLID)
+#' }
 #'
 #' @return Json
 #' @author Vincent Terrasi

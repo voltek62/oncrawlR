@@ -28,8 +28,9 @@ ResCode
 500 : Internal error
 }
 \examples{
+\dontrun{
 pages <- listLogs(YOURPROJECTID)
-
+}
 }
 \author{
 Vincent Terrasi
