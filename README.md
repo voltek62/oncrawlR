@@ -2,18 +2,16 @@
 
 ### Description
 
-This R package implements methods for querying SEO data from oncrawlR using its API.
-
-This API uses a basic authentication with an API key. 
+This R package implements methods for querying SEO data from OnCrawl and uses a basic authentication with an API key. 
 
 NB : To get this API key, you need to have a Oncrawl [Business plan](https://www.oncrawl.com/pricing-crawler/).
 
-The script is explained step by step on my blog post "[Guide complet de l’API OncrawlR (package)](https://data-seo.com)"
+The script is explained step by step on my blog post "[Complete API guide with R (package)]( https://data-seo.com/2019/06/06/oncrawl-complete-api-guide-with-r/"
 
 
 ## Install
 ```
-#CRAN R (official version)
+#CRAN R (official version) : Ongoing !
 install.packages("oncrawlR")
 
 #Github (dev version)
@@ -24,12 +22,12 @@ devtools::install_github("voltek62/oncrawlR")
 ## Getting started
 Get your oncrawlR API key and load the oncrawlR package.
 
-This key must be copied to the root of your project in a txt file : ytg_configuration.txt
+This key must be copied to the root of your project in a txt file : oncrawl_configuration.txt
 
 ```r
-token=YOURAPIKEY
-debug=FALSE
-api=
+token = YOURAPIKEY
+debug = FALSE
+api = https://app.oncrawl.com/api/v2/
 ```
 
 ```
