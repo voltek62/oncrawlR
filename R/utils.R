@@ -4,8 +4,10 @@
 #' @param namefile the filename for the JSON export
 #'
 #' @examples
+#' \donttest{
 #' mylist <- c("/cat/domain","/cat/")
 #' oncrawlCreateSegmentation(mylist,"test.json")
+#' }
 #'
 #' @return JSON file
 #' @author Vincent Terrasi

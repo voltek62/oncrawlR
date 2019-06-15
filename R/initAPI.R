@@ -1,7 +1,9 @@
 #' Prepare Token for API calls
 #'
 #' @examples
+#' \donttest{
 #' initAPI()
+#' }
 #'
 #' @return character if no error with API authentification
 #' @author Vincent Terrasi

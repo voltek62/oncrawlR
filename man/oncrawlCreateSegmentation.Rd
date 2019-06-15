@@ -18,8 +18,10 @@ JSON file
 Transform a character array of URLs into JSON file for OnCrawl platform
 }
 \examples{
+\donttest{
 mylist <- c("/cat/domain","/cat/")
 oncrawlCreateSegmentation(mylist,"test.json")
+}
 
 }
 \author{

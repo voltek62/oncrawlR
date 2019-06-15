@@ -13,7 +13,9 @@ character if no error with API authentification
 Prepare Token for API calls
 }
 \examples{
+\donttest{
 initAPI()
+}
 
 }
 \author{
