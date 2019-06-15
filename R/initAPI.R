@@ -1,11 +1,18 @@
 #' Prepare Token for API calls
 #'
+#' @details
+#' Example file for oncrawl_configuration.txt
+#'
+#' key = 5516LP29W5Q9XXXXXXXXXXXXOEUGWHM9
+#' debug = FALSE
+#' api = https://app.oncrawl.com/api/v2/
+#'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' initAPI()
 #' }
 #'
-#' @return character if no error with API authentification
+#' @return ok if no error with API authentification
 #' @author Vincent Terrasi
 #' @export
 #' @importFrom utils read.csv read.delim
@@ -13,35 +20,14 @@
 initAPI <- function() {
 
   API <- "https://app.oncrawl.com/api/v2/"
-
   path <- getwd()
-  # if test
-  path <- gsub("/tests/testthat","",path, fixed=TRUE)
-  path <- paste0(path,"/oncrawl_configuration.txt")
+  path <- file.path(path, "oncrawl_configuration.txt")
 
-  if(!file.exists(path)){
-
-    warning("Please, set your API Key in the file oncrawl_configuration.txt")
-
-    fileConn<-file(path)
-    writeLines(c("key = ","debug = FALSE", paste0("api = ",API)), fileConn)
-    close(fileConn)
-
-    return("error")
-  }
+  if(!file.exists(path)) stop("Please, set your API Key in the file oncrawl_configuration.txt")
 
   tab <- read.delim(path, header=FALSE, sep="=", stringsAsFactors = FALSE, strip.white=FALSE)
 
-  if (!exists("tab")) {
-
-    warning("Please, set your API Key in the file oncrawl_configuration.txt")
-
-    fileConn<-file(path)
-    writeLines(c("key = ","debug = FALSE", paste0("api = ",API)), fileConn)
-    close(fileConn)
-
-    return("error")
-  }
+  if (!exists("tab")) stop("Please, set your API Key in the file oncrawl_configuration.txt")
 
   token <- gsub("(^[[:space:]]+|[[:space:]]+$)", "", tab[1,2])
   options(oncrawl_token = token)
@@ -57,10 +43,7 @@ initAPI <- function() {
 
   token <- getOption('oncrawl_token')
 
-  if(nchar(token)<=10) {
-    warning("Please, set your API Key in the file oncrawl_configuration.txt")
-    return("error")
-  }
+  if(nchar(token)<=10) stop("Please, set your API Key in the file oncrawl_configuration.txt")
 
   return("ok")
 }

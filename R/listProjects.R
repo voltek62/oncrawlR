@@ -15,7 +15,7 @@
 #' 500 : Internal error
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' initAPI()
 #' projects <- listProjects()
 #' }
@@ -31,8 +31,7 @@ listProjects <- function(limit=100) {
 
   if(nchar(KEY)<=10) {
     testConf <- initAPI()
-    if(testConf=="error")
-      return()
+    if(testConf!="ok") stop("No API Key detected")
   }
 
   curl <- RCurl::getCurlHandle()
@@ -53,7 +52,7 @@ listProjects <- function(limit=100) {
   if (info$response.code==200) {
     res <- jsonlite::fromJSON(reply)
   } else {
-    warning("error")
+    warning(reply)
   }
 
   return(res)

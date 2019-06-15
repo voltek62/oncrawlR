@@ -33,8 +33,7 @@ getCrawl <- function(crawlId) {
 
   if(nchar(KEY)<=10) {
     testConf <- initAPI()
-    if(testConf=="error")
-      return()
+    if(testConf!="ok") stop("No API Key detected")
   }
 
   curl <- RCurl::getCurlHandle()
@@ -57,7 +56,7 @@ getCrawl <- function(crawlId) {
     res <- jsonlite::fromJSON(reply)
   } else {
     # return error if response.code!=200
-    return("error")
+    warning(reply)
   }
 
   return(res)

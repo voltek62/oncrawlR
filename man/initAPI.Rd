@@ -7,13 +7,20 @@
 initAPI()
 }
 \value{
-character if no error with API authentification
+ok if no error with API authentification
 }
 \description{
 Prepare Token for API calls
 }
+\details{
+Example file for oncrawl_configuration.txt
+
+key = 5516LP29W5Q9XXXXXXXXXXXXOEUGWHM9
+debug = FALSE
+api = https://app.oncrawl.com/api/v2/
+}
 \examples{
-\donttest{
+\dontrun{
 initAPI()
 }
 

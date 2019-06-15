@@ -4,12 +4,14 @@
 \alias{oncrawlCreateSegmentation}
 \title{Transform a character array of URLs into JSON file for OnCrawl platform}
 \usage{
-oncrawlCreateSegmentation(list_urls, namefile)
+oncrawlCreateSegmentation(list_urls, namefile, pathfile = tempdir())
 }
 \arguments{
 \item{list_urls}{your urls}
 
 \item{namefile}{the filename for the JSON export}
+
+\item{pathfile}{string. Optional. If not specified, the intermediate files are created under \code{TEMPDIR}, with the assumption that directory is granted for written permission.}
 }
 \value{
 JSON file
@@ -18,10 +20,8 @@ JSON file
 Transform a character array of URLs into JSON file for OnCrawl platform
 }
 \examples{
-\donttest{
 mylist <- c("/cat/domain","/cat/")
 oncrawlCreateSegmentation(mylist,"test.json")
-}
 
 }
 \author{

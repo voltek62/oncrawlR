@@ -29,8 +29,7 @@ listLogs <- function(projectId) {
 
   if(nchar(KEY)<=10) {
     testConf <- initAPI()
-    if(testConf=="error")
-      return()
+    if(testConf!="ok") stop("No API Key detected")
   }
 
   curl <- RCurl::getCurlHandle()

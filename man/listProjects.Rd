@@ -28,7 +28,7 @@ ResCode
 500 : Internal error
 }
 \examples{
-\dontrun{
+\donttest{
 initAPI()
 projects <- listProjects()
 }

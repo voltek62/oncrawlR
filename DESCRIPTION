@@ -1,7 +1,7 @@
 Package: oncrawlR
 Type: Package
 Title: Machine Learning for S.E.O
-Version: 0.1.2
+Version: 0.1.3
 Author: Vincent Terrasi
 Maintainer: Vincent Terrasi <vincent@data-seo.com>
 Description: 

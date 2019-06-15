@@ -2,23 +2,19 @@
 #'
 #' @param list_urls your urls
 #' @param namefile the filename for the JSON export
+#' @param pathfile string. Optional. If not specified, the intermediate files are created under \code{TEMPDIR}, with the assumption that directory is granted for written permission.
 #'
 #' @examples
-#' \donttest{
 #' mylist <- c("/cat/domain","/cat/")
 #' oncrawlCreateSegmentation(mylist,"test.json")
-#' }
 #'
 #' @return JSON file
 #' @author Vincent Terrasi
 #' @export
-oncrawlCreateSegmentation <- function(list_urls, namefile) {
+oncrawlCreateSegmentation <- function(list_urls, namefile, pathfile=tempdir()) {
 
-  #TODO:check dataset
-  if(!is.character(list_urls)) {
-    warning('the first argument must be a character array')
-    return()
-  }
+  if (!is.character(list_urls)) stop("the first argument for 'dataset' must be a character array")
+  if (!file.exists(pathfile)) stop("the path for 'pathfile' - ", pathfile, " does not exist")
 
   # limit to 15 segments
   if (length(list_urls)>15)
@@ -70,9 +66,10 @@ oncrawlCreateSegmentation <- function(list_urls, namefile) {
   }
 
   json <- jsonlite::toJSON(newlist)
-  readr::write_lines(json,namefile)
+  filepath <- file.path(pathfile, namefile)
+  readr::write_lines(json,filepath)
 
-  warning("your json file is generated")
+  message(paste0("your json file is generated - ",filepath))
 
 }
 
