@@ -6,7 +6,7 @@ This R package implements methods for querying SEO data from OnCrawl and uses a 
 
 NB : To get this API key, you need to have a Oncrawl [Business plan](https://www.oncrawl.com/pricing-crawler/).
 
-The script is explained step by step on my blog post [Complete API guide with R (package)](https://data-seo.com/2019/06/06/oncrawl-complete-api-guide-with-r/).
+The script is explained step by step on my blog post [Complete API guide with R (package)](https://data-seo.com/2019/06/15/oncrawl-complete-api-guide-with-r/).
 
 
 ## Install
