@@ -40,7 +40,7 @@ library(oncrawlR)
 This function can check your token.
 
 ```
-initAPI()
+initAPI(".")
 ```
 
 ### 2. listProjects 
