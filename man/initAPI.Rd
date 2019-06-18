@@ -4,7 +4,10 @@
 \alias{initAPI}
 \title{Prepare Token for API calls}
 \usage{
-initAPI()
+initAPI(path)
+}
+\arguments{
+\item{path}{path of your conf file}
 }
 \value{
 ok if no error with API authentification
@@ -21,7 +24,7 @@ api = https://app.oncrawl.com/api/v2/
 }
 \examples{
 \dontrun{
-initAPI()
+initAPI(tempdir())
 }
 
 }
