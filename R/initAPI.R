@@ -1,5 +1,7 @@
 #' Prepare Token for API calls
 #'
+#' @param path path of your conf file
+#'
 #' @details
 #' Example file for oncrawl_configuration.txt
 #'
@@ -9,7 +11,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' initAPI()
+#' initAPI(tempdir())
 #' }
 #'
 #' @return ok if no error with API authentification
@@ -17,10 +19,10 @@
 #' @export
 #' @importFrom utils read.csv read.delim
 #'
-initAPI <- function() {
+initAPI <- function(path) {
 
   API <- "https://app.oncrawl.com/api/v2/"
-  path <- getwd()
+
   path <- file.path(path, "oncrawl_configuration.txt")
 
   if(!file.exists(path)) stop("Please, set your API Key in the file oncrawl_configuration.txt")
@@ -43,7 +45,13 @@ initAPI <- function() {
 
   token <- getOption('oncrawl_token')
 
-  if(nchar(token)<=10) stop("Please, set your API Key in the file oncrawl_configuration.txt")
+  if(nchar(token)<=10) {
+    token <- NULL
+    api <- NULL
+    debug <- NULL
+    stop("Please, set your API Key in the file oncrawl_configuration.txt")
+  }
 
   return("ok")
 }
+
