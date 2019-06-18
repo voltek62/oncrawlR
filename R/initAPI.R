@@ -11,7 +11,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' initAPI(tempdir())
+#' initAPI("oncrawl_configuration.txt")
 #' }
 #'
 #' @return ok if no error with API authentification
@@ -20,10 +20,6 @@
 #' @importFrom utils read.csv read.delim
 #'
 initAPI <- function(path) {
-
-  API <- "https://app.oncrawl.com/api/v2/"
-
-  path <- file.path(path, "oncrawl_configuration.txt")
 
   if(!file.exists(path)) stop("Please, set your API Key in the file oncrawl_configuration.txt")
 
