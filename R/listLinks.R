@@ -18,7 +18,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' pages <- listLinks(YOURCRAWLID)
+#' links <- listLinks(YOURCRAWLID)
 #' }
 #'
 #' @return Json
