@@ -24,7 +24,7 @@ api = https://app.oncrawl.com/api/v2/
 }
 \examples{
 \dontrun{
-initAPI(tempdir())
+initAPI("oncrawl_configuration.txt")
 }
 
 }

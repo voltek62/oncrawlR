@@ -235,6 +235,7 @@ oncrawlTrainModel <- function(dataset, nround=300, verbose=1) {
 #' @param x your training data
 #' @param y your predicted data
 #' @param max the number of importance variable you want to explain
+#' @param path path of your conf file
 #'
 #' @examples
 #' \dontrun{
@@ -247,7 +248,9 @@ oncrawlTrainModel <- function(dataset, nround=300, verbose=1) {
 #' @importFrom graphics plot title
 #' @importFrom rlang .data
 #'
-oncrawlExplainModel <- function(model, x, y, max=10) {
+oncrawlExplainModel <- function(model, x, y, max=10, path=tempdir()) {
+
+  if(!file.exists(path)) stop("Please, set a valid path")
 
   explainer_xgb <- DALEX::explain(model,
                            data = data.matrix(x),
@@ -257,7 +260,7 @@ oncrawlExplainModel <- function(model, x, y, max=10) {
   #print importance variables
   vd_xgb <- DALEX::variable_importance(explainer_xgb, type = "raw")
   vd_plot <- plot(vd_xgb)
-  ggplot2::ggsave("variable_importance.jpg",vd_plot)
+  ggplot2::ggsave(file.path(path,"variable_importance.jpg"),vd_plot)
 
   variables <- dplyr::arrange(vd_xgb, -vd_xgb$dropout_loss)
   variables <- as.character(variables$variable)
@@ -271,9 +274,11 @@ oncrawlExplainModel <- function(model, x, y, max=10) {
                                             type = "pdp")
 
     p <- plot(sv_xgb_satisfaction)
-    ggplot2::ggsave(paste0("explain_",variables[i],".jpg"),p)
+    ggplot2::ggsave(file.path(path,paste0("explain_",variables[i]),".jpg"),p)
 
   }
+
+  message(paste0("your report is generated - ",path))
 
   return(vd_plot)
 

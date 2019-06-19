@@ -4,7 +4,7 @@
 \alias{oncrawlExplainModel}
 \title{Explain XGBoost Model by displaying each importance variables}
 \usage{
-oncrawlExplainModel(model, x, y, max = 10)
+oncrawlExplainModel(model, x, y, max = 10, path = tempdir())
 }
 \arguments{
 \item{model}{your XgBoost model}
@@ -14,6 +14,8 @@ oncrawlExplainModel(model, x, y, max = 10)
 \item{y}{your predicted data}
 
 \item{max}{the number of importance variable you want to explain}
+
+\item{path}{path of your conf file}
 }
 \value{
 graphs
