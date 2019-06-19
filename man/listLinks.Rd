@@ -4,10 +4,14 @@
 \alias{listLinks}
 \title{List all links from a crawl}
 \usage{
-listLinks(crawlId)
+listLinks(crawlId, originFilter = "", targetFilter = "")
 }
 \arguments{
 \item{crawlId}{ID of your crawl}
+
+\item{originFilter}{select a specific source}
+
+\item{targetFilter}{select a specific target}
 }
 \value{
 Json

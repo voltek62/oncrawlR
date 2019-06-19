@@ -1,6 +1,8 @@
 #' List all links from a crawl
 #'
 #' @param crawlId ID of your crawl
+#' @param originFilter select a specific source
+#' @param targetFilter select a specific target
 #'
 #' @details
 #' <http://developer.oncrawl.com/#Data-types>
@@ -22,7 +24,7 @@
 #' @return Json
 #' @author Vincent Terrasi
 #' @export
-listLinks <- function(crawlId) {
+listLinks <- function(crawlId, originFilter="", targetFilter="") {
 
   KEY <- getOption('oncrawl_token')
   DEBUG <- getOption('oncrawl_debug')
@@ -41,37 +43,53 @@ listLinks <- function(crawlId) {
             ,Authorization=paste("Bearer",KEY)
   )
 
-  jsonbody <- jsonlite::toJSON(list("fields"=c(
-                  "origin",
-                  #"origin_ext",
-                  #"origin_first_path",
-                  #"origin_has_params",
-                  #"origin_host",
-                  #"origin_path",
-                  #"origin_querystring_key",
-                  #"origin_querystring_keyvalue",
-                  "target",
-                  #"target_ext",
-                  "target_fetched",
-                  #"target_first_path",
-                  #"target_has_params",
-                  #"target_host",
-                  #"target_path",
-                  #"target_querystring_key",
-                  #"target_querystring_keyvalue",
-                  "target_status",
-                  "target_status_range",
-                  "anchor",
-                  "follow",
-                  "intern",
-                  "juice"
-                ),
-                export=TRUE))
+
+  listJSON <- list("fields"=c(
+    "origin",
+    #"origin_ext",
+    #"origin_first_path",
+    #"origin_has_params",
+    #"origin_host",
+    #"origin_path",
+    #"origin_querystring_key",
+    #"origin_querystring_keyvalue",
+    "target",
+    #"target_ext",
+    "target_fetched",
+    #"target_first_path",
+    #"target_has_params",
+    #"target_host",
+    #"target_path",
+    #"target_querystring_key",
+    #"target_querystring_keyvalue",
+    "target_status",
+    "target_status_range",
+    "anchor",
+    "follow",
+    "intern",
+    "juice"
+  ),
+  export=TRUE)
+
+  if (originFilter!="" && targetFilter=="") {
+    listJSON <- c(listJSON, list(oql=list(field= c("origin","equals",originFilter))))
+  }
+  else if (originFilter=="" && targetFilter!="") {
+    listJSON <- c(listJSON, list(oql=list(field= c("target","equals",targetFilter))))
+  }
+  else if (originFilter!="" && targetFilter!="") {
+    #NOT IMPLEMENTED
+    #listFilters <- list(field= c("origin","equals",originFilter))
+    #listFilters <- c(listFilters, list(field= c("target","equals",targetFilter)))
+    #listJSON <- c(listJSON, list(oql=list(and=listFilters)))
+  }
+
+  jsonbody <- jsonlite::toJSON(listJSON)
 
   reply <- RCurl::postForm(pageAPI,
-                    .opts=list(httpheader=hdr, postfields=jsonbody),
-                    curl = curl,
-                    style = "POST"
+                           .opts=list(httpheader=hdr, postfields=jsonbody),
+                           curl = curl,
+                           style = "POST"
   )
 
   info <- RCurl::getCurlInfo(curl)
