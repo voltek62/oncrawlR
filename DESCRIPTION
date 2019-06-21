@@ -1,18 +1,18 @@
-Package: oncrawlR
-Type: Package
-Title: Machine Learning for S.E.O
-Version: 0.1.5
-Authors@R: c(
+Package:oncrawlR
+Type:Package
+Title:Machine Learning for S.E.O
+Version:0.1.5
+Authors@R:c(
     person("Vincent", "Terrasi", ,"vincent@data-seo.com", c("aut", "cre")),
     person("OnCrawl", role = c("cph", "fnd"))
     )
-Maintainer: Vincent Terrasi <vincent@data-seo.com>
-Description: Provides valuable informations on the status of any web page by measuring its content : S.E.O tags, duplicate and near duplicate content, structured data, linking… and many other amazing things. 
+Maintainer:Vincent Terrasi <vincent@data-seo.com>
+Description:Provides valuable informations on the status of any web page by measuring its content : S.E.O tags, duplicate and near duplicate content, structured data, linking… and many other amazing things. 
     S.E.O means Search Engine Optimization. 
     Get a real full S.E.O report: useful to detect errors on a page and optimise it. 
-License: MIT + file LICENSE
-Encoding: UTF-8
-LazyData: true
+License:MIT + file LICENSE
+Encoding:UTF-8
+LazyData:true
 Depends:
     R (>= 3.5.0)
 Imports:
@@ -30,4 +30,4 @@ Imports:
 Suggests:
     devtools (>= 1.12.0),
     testthat
-RoxygenNote: 6.1.1
+RoxygenNote:6.1.1
