@@ -7,7 +7,7 @@ Authors@R:c(
     person("OnCrawl", role = c("cph", "fnd"))
     )
 Maintainer:Vincent Terrasi <vincent@data-seo.com>
-Description:Provides valuable informations on the status of any web page by measuring its content : S.E.O tags, duplicate and near duplicate content, structured data, linking… and many other amazing things. 
+Description:Provides valuable informations on the status of any web page by measuring its content (S.E.O tags, duplicate and near duplicate content, structured data, linking… and many other amazing things). 
     S.E.O means Search Engine Optimization. 
     Get a real full S.E.O report: useful to detect errors on a page and optimise it. 
 License:MIT + file LICENSE
