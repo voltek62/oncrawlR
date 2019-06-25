@@ -143,12 +143,11 @@ oncrawlSplitURL <- function(list_urls, limit=15) {
 #' @export
 #' @importFrom stats predict
 #' @importFrom rlang .data
-#'
+#' @importFrom stats median
 oncrawlTrainModel <- function(dataset, nround=300, verbose=1) {
 
-  #TODO: test if var crawl_hits_google
-  if (which("crawl_hits_google"==names(dataset))==0) {
-    warning("You need logs data with a column named crawl_hit_data")
+  if ( which("analytics_entrances_seo_google"==names(dataset))==0 ) {
+    warning("You need analytics data, please connect analytics datasource")
     return()
   }
 
@@ -168,11 +167,11 @@ oncrawlTrainModel <- function(dataset, nround=300, verbose=1) {
 
 
   # logistic regression 0 or 1 : choose a thresold
-  dataset$crawl_hits_google[which(is.na(dataset$crawl_hits_google))] <- 0
-  #thresold <- median(datasetMatAll$crawl_hits_google)
-  thresold <- mean(dataset$crawl_hits_google)
-  dataset$crawl_hits_google[which(dataset$crawl_hits_google <= thresold )] <- 0
-  dataset$crawl_hits_google[which(dataset$crawl_hits_google != 0)] <- 1
+  thresold <- median(dataset$analytics_entrances_seo_google)
+  #thresold <- mean(dataset$analytics_entrances_seo_google)
+  dataset$analytics_entrances_seo_google[which(is.na(dataset$analytics_entrances_seo_google))] <- 0
+  dataset$analytics_entrances_seo_google[which(dataset$analytics_entrances_seo_google <= thresold )] <- 0
+  dataset$analytics_entrances_seo_google[which(dataset$analytics_entrances_seo_google > thresold)] <- 1
 
   # remove all NA
   datasetMat <- dataset[,colSums(is.na(dataset))<nrow(dataset)]
@@ -183,23 +182,33 @@ oncrawlTrainModel <- function(dataset, nround=300, verbose=1) {
 
   X <- datasetMat[train_ind, ]
   X_test <- datasetMat[-train_ind, ]
-  y<- datasetMat[train_ind, "crawl_hits_google"]
-  y_test<-datasetMat[-train_ind, "crawl_hits_google"]
+  y<- datasetMat[train_ind, "analytics_entrances_seo_google"]
+  y_test<-datasetMat[-train_ind, "analytics_entrances_seo_google"]
 
   # wt = without target
   X_wt <- dplyr::select(X,
-                        -.data$crawl_hits,
-                        -.data$crawl_hits_google,
-                        -.data$crawl_hits_google_smartphone,
-                        -.data$crawl_hits_google_web_search
+                        -.data$analytics_entrances_seo_google
+                        ,-dplyr::contains("ati_")
+                        ,-dplyr::contains("google_analytics_")
+                        ,-dplyr::contains("adobe_analytics_")
+                        ,-dplyr::contains("googlebot_")
+                        ,-dplyr::contains("crawled_by_googlebot")
+                        #-.data$crawl_hits_google,
+                        #-.data$crawl_hits_google_smartphone,
+                        #-.data$crawl_hits_google_web_search
   )
 
   # wt = without target
   X_test_wt <- dplyr::select(X_test,
-                             -.data$crawl_hits,
-                             -.data$crawl_hits_google,
-                             -.data$crawl_hits_google_smartphone,
-                             -.data$crawl_hits_google_web_search
+                             -.data$analytics_entrances_seo_google
+                             ,-dplyr::contains("ati_")
+                             ,-dplyr::contains("google_analytics_")
+                             ,-dplyr::contains("adobe_analytics_")
+                             ,-dplyr::contains("googlebot_")
+                             ,-dplyr::contains("crawled_by_googlebot")
+                             #-.data$crawl_hits_google,
+                             #-.data$crawl_hits_google_smartphone,
+                             #-.data$crawl_hits_google_web_search
   )
 
   # create the model
@@ -274,7 +283,8 @@ oncrawlExplainModel <- function(model, x, y, max=10, path=tempdir()) {
                                             type = "pdp")
 
     p <- plot(sv_xgb_satisfaction)
-    ggplot2::ggsave(file.path(path,paste0("explain_",variables[i]),".jpg"),p)
+
+    ggplot2::ggsave(file.path(path,paste0("explain_",variables[i],".jpg")),p)
 
   }
 

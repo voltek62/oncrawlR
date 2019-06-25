@@ -3,3 +3,5 @@
 .RData
 .Ruserdata
 oncrawl_configuration.txt
+examples
+*.jpg
