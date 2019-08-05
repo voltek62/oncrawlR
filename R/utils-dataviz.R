@@ -18,7 +18,7 @@
 oncrawlCreateDashboard <- function(dataset, namefile, width, pathfile=tempdir()) {
 
   # spread data
-  resDate <- tidyr::spread(dataset, date, value)
+  resDate <- tidyr::spread(dataset, .data$date, .data$value)
 
   if (ncol(resDate)<3) stop("You must have at least two different dates in your dataset.")
 
@@ -52,7 +52,7 @@ oncrawlCreateDashboard <- function(dataset, namefile, width, pathfile=tempdir())
             )
   )
 
-  out$dependencies = c(out$dependencies, htmlwidgets:::widget_dependencies("sparkline", "sparkline"))
+  #out$dependencies = c(out$dependencies, htmlwidgets:::widget_dependencies("sparkline", "sparkline"))
 
   filepath <- file.path(pathfile, namefile)
 
@@ -96,6 +96,7 @@ export_formattableWidget <- function(w, file, width=400, background = "white", d
 #' @return file
 #' @author Vincent Terrasi
 #' @export
+#'
 oncrawlCreateGraph <- function(dataset, namefile, width, height, pathfile=tempdir()) {
 
   # round x-axis
