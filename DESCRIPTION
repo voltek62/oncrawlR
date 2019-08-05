@@ -33,6 +33,8 @@ Imports:
     e1071 (>= 1.7),
     pdp (>= 0.7),
     fs (>= 1.3),
+    scales (>= 1.0.0),
+    tidyr (>= 0.8.2),
     htmltools (>= 0.3.5)
 Suggests:
     devtools (>= 1.12.0),

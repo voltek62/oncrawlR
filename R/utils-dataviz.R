@@ -1,8 +1,8 @@
 #' Create a dashboard
 #'
-#' @param dataset dataset with 3 columns : date, unique name of metric, value
-#' @param namefile the filename for the export
-#' @param width width of your picture
+#' @param dataset Dataset with 3 columns : date, unique name of metric, value
+#' @param namefile Filename for the export
+#' @param width Width of your picture
 #' @param pathfile string. Optional. If not specified, the intermediate files are created under \code{TEMPDIR}, with the assumption that directory is granted for written permission.
 #'
 #' @examples
@@ -63,8 +63,13 @@ oncrawlCreateDashboard <- function(dataset, namefile, width, pathfile=tempdir())
 
 }
 
-
-#'  export_formattableWidget(out,"metrics.png", width=500)
+#' Transform HTML widget into picture
+#'
+#' @param w HTML content to print
+#' @param file A vector of names of output files. Should end with .png, .pdf, or .jpeg. If several screenshots have to be taken and only one filename is provided, then the function appends the index number of the screenshot to the file name.
+#' @param width Viewport width. This is the width of the browser "window".
+#' @param background Background color for web page
+#' @param delay Time to wait before taking screenshot, in seconds. Sometimes a longer delay is needed for all assets to display properly.
 #'
 #' @importFrom htmltools html_print
 #' @importFrom webshot webshot
@@ -96,7 +101,8 @@ export_formattableWidget <- function(w, file, width=400, background = "white", d
 #' @return file
 #' @author Vincent Terrasi
 #' @export
-#'
+#' @importFrom stats lag
+#' @importFrom utils head
 oncrawlCreateGraph <- function(dataset, namefile, width, height, pathfile=tempdir()) {
 
   # round x-axis
@@ -113,30 +119,30 @@ oncrawlCreateGraph <- function(dataset, namefile, width, height, pathfile=tempdi
   # group by x-axis and compute means
   newDT <- data.frame(x=X,y=Y)
 
-  curve <- newDT %>%
-    dplyr::group_by(x) %>%
-    dplyr::summarise(y = mean(y) ) %>%
-    dplyr::mutate(diff = round(y - lag(y, default = first(y)),3)) %>%
-    dplyr::ungroup()
+  curve <- newDT
+  curve <- dplyr::group_by(newDT, .data$x)
+  curve <- dplyr::summarise(newDT, y = mean(.data$y) )
+  curve <- dplyr::mutate(newDT, diff = round(.data$y - lag(.data$y, default = dplyr::first(.data$y)),3))
+  curve <- dplyr::ungroup(newDT)
 
   # filter too more results
   if (nrow(curve)>10)
-    curve <- dplyr::filter(curve, x==0 | diff!=lag(diff,default=first(diff)) )
+    curve <- dplyr::filter(curve, .data$x==0 | diff!=lag(.data$diff,default = dplyr::first(.data$diff)) )
 
   if (nrow(curve)>15)
-    curve <- dplyr::filter(curve, diff!=0 )
+    curve <- dplyr::filter(curve, .data$diff!=0 )
 
   # find max diff
   ablinePos <- curve[which(abs(curve$diff)==max(abs(curve$diff))),]$x
 
   # build graph
-  hh <- ggplot2::ggplot(curve, aes(x, y)) + theme_minimal()
+  hh <- ggplot2::ggplot(curve, ggplot2::aes(.data$x, .data$y)) + ggplot2::theme_minimal()
 
-  if (max(factor_top[[1]][["x"]]) <= 1) {
-    hh <- hh + ggplot2::geom_line(linetype = 1) + coord_cartesian(xlim = c(0,max(curve$x)), ylim = c(min(curve$y),max(curve$y)))
+  if (max(dataset[[1]][["x"]]) <= 1) {
+    hh <- hh + ggplot2::geom_line(linetype = 1) + ggplot2::coord_cartesian(xlim = c(0,max(curve$x)), ylim = c(min(curve$y),max(curve$y)))
   }
   else {
-    hh <- hh + ggplot2::geom_line(linetype = 1) + coord_cartesian(xlim = c(1,max(curve$x)+min(curve$x)), ylim = c(min(curve$y),max(curve$y)))
+    hh <- hh + ggplot2::geom_line(linetype = 1) + ggplot2::coord_cartesian(xlim = c(1,max(curve$x)+min(curve$x)), ylim = c(min(curve$y),max(curve$y)))
   }
 
   hh <- hh + ggplot2::scale_y_continuous(labels = scales::percent)
@@ -146,12 +152,12 @@ oncrawlCreateGraph <- function(dataset, namefile, width, height, pathfile=tempdi
   }
 
   if (length(curve$x)<20) {
-    hh <- hh + ggplot2::geom_point() + ggplot2::geom_label(aes(label = scales::percent(y)))
+    hh <- hh + ggplot2::geom_point() + ggplot2::geom_label(ggplot2::aes(label = scales::percent(curve$y)))
   }
 
-  hh <- hh +  ggplot2::geom_vline(xintercept = head(ablinePos,1), linetype="dashed", color = "red")
+  hh <- hh +  ggplot2::geom_vline(xintercept = utils::head(ablinePos,1), linetype="dashed", color = "red")
 
-  hh <- hh + labs(x=name,y="Prediction")
+  hh <- hh + ggplot2::labs(x=name,y="Prediction")
 
   ggplot2::ggsave(file.path(pathfile,namefile), hh, width = width, height= height, units="in", dpi=100)
 

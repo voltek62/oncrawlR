@@ -7,11 +7,11 @@
 oncrawlCreateDashboard(dataset, namefile, width, pathfile = tempdir())
 }
 \arguments{
-\item{dataset}{dataset with 3 columns : date, unique name of metric, value}
+\item{dataset}{Dataset with 3 columns : date, unique name of metric, value}
 
-\item{namefile}{the filename for the export}
+\item{namefile}{Filename for the export}
 
-\item{width}{width of your picture}
+\item{width}{Width of your picture}
 
 \item{pathfile}{string. Optional. If not specified, the intermediate files are created under \code{TEMPDIR}, with the assumption that directory is granted for written permission.}
 }
