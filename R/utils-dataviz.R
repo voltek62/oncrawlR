@@ -120,10 +120,10 @@ oncrawlCreateGraph <- function(dataset, namefile, width, height, pathfile=tempdi
   newDT <- data.frame(x=X,y=Y)
 
   curve <- newDT
-  curve <- dplyr::group_by(newDT, .data$x)
-  curve <- dplyr::summarise(newDT, y = mean(.data$y) )
-  curve <- dplyr::mutate(newDT, diff = round(.data$y - lag(.data$y, default = dplyr::first(.data$y)),3))
-  curve <- dplyr::ungroup(newDT)
+  curve <- dplyr::group_by(curve, .data$x)
+  curve <- dplyr::summarise(curve, y = mean(.data$y) )
+  curve <- dplyr::mutate(curve, diff = round(.data$y - lag(.data$y, default = dplyr::first(.data$y)),3))
+  curve <- dplyr::ungroup(curve)
 
   # filter too more results
   if (nrow(curve)>10)
