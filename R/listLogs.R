@@ -61,7 +61,7 @@ listLogs <- function(projectId) {
                                       "seo_visits_device_desktop","seo_visits_device_mobile","seo_visits_google","seo_visits_google_device_desktop","seo_visits_google_device_mobile",
                                       "seo_visits"
                                      ),
-                          export=TRUE))
+                          export="true"))
 
   reply <- RCurl::postForm(pageAPI,
                     .opts=list(httpheader=hdr, postfields=jsonbody),

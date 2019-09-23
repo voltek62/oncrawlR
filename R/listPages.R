@@ -44,7 +44,7 @@ listPages <- function(crawlId) {
             ,Authorization=paste("Bearer",KEY)
   )
 
-  jsonbody <- jsonlite::toJSON(list("fields"=fieldsList,export=TRUE))
+  jsonbody <- jsonlite::toJSON(list("fields"=fieldsList,export="true"))
 
   reply <- RCurl::postForm(pageAPI,
                     .opts=list(httpheader=hdr, postfields=jsonbody),

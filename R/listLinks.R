@@ -69,13 +69,13 @@ listLinks <- function(crawlId, originFilter="", targetFilter="") {
     "intern",
     "juice"
   ),
-  export=TRUE)
+  export="true")
 
   if (originFilter!="" && targetFilter=="") {
-    listJSON <- c(listJSON, list(oql=list(field= c("origin","equals",originFilter))))
+    listJSON <- c(listJSON, list(oql=list(field= c("origin","contains",originFilter))))
   }
   else if (originFilter=="" && targetFilter!="") {
-    listJSON <- c(listJSON, list(oql=list(field= c("target","equals",targetFilter))))
+    listJSON <- c(listJSON, list(oql=list(field= c("target","contains",targetFilter))))
   }
   else if (originFilter!="" && targetFilter!="") {
     #NOT IMPLEMENTED
