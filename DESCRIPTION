@@ -1,7 +1,7 @@
 Package: oncrawlR
 Type: Package
 Title: Machine Learning for S.E.O
-Version: 0.1.7
+Version: 0.1.8
 Authors@R: c(
     person("Vincent", "Terrasi", ,"vincent@data-seo.com", c("aut", "cre")),
     person("OnCrawl", role = c("cph", "fnd"))
