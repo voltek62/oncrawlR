@@ -146,7 +146,8 @@ getPageFields <- function(crawlId) {
                             & !grepl("parsed_html",.data$name)
                             & !grepl("sources",.data$name)
                             & !grepl("text_to_code",.data$name)
-                            & !grepl("title_hash",.data$name)
+							& !grepl("_types",.data$name)
+                            & !grepl("_hash",.data$name)
                             & !grepl("twc_",.data$name)
                             & !grepl("watched_",.data$name) )
 
