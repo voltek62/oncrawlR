@@ -34,34 +34,16 @@ listLogs <- function(projectId) {
 
   curl <- RCurl::getCurlHandle()
 
-  pageAPI <- paste0(API,"data/project/", projectId,"/log_monitoring/pages", sep = "")
+  # get fields
+  fieldsList <- getPageFieldsLogs(projectId)
+
+  pageAPI <- paste0(API,"data/project/", projectId,"/log_monitoring/events", sep = "")
 
   hdr  <- c('Content-Type'="application/json"
             ,Authorization=paste("Bearer",KEY)
   )
 
-  jsonbody <- jsonlite::toJSON(list("fields"=c(
-                                      "url",#"url_ext","url_first_path","url_has_params","url_host","url_is_resource",
-                                      "urlpath",
-                                      "crawl_hits",
-                                      #"crawl_hits_frequency","crawl_hits_frequency_google","crawl_hits_frequency_google_smartphone","crawl_hits_frequency_google_web_search",
-                                      "crawl_hits_google","crawl_hits_google_smartphone","crawl_hits_google_web_search",
-                                      "is_active","is_active_google","is_active_intraday","is_active_intraday_google",
-                                      "is_crawled","is_crawled_google","is_crawled_google_smartphone","is_crawled_google_web_search",
-                                      "is_crawled_intraday","is_crawled_intraday_google","is_crawled_intraday_google_smartphone","is_crawled_intraday_google_web_search",
-                                      "is_newly_active","is_newly_active_google","is_newly_active_intraday","is_newly_active_intraday_google",
-                                      "is_newly_crawled","is_newly_crawled_google","is_newly_crawled_google_smartphone","is_newly_crawled_google_web_search",
-                                      "is_newly_crawled_intraday","is_newly_crawled_intraday_google","is_newly_crawled_intraday_google_smartphone","is_newly_crawled_intraday_google_web_search",
-                                      "is_newly_inactive","is_newly_inactive_google",
-                                      "is_newly_uncrawled","is_newly_uncrawled_google","is_newly_uncrawled_google_smartphone","is_newly_uncrawled_google_web_search",
-                                      "new_visit_delay","new_visit_delay_google",
-                                      #"querystring_key","querystring_keyvalue",
-                                      #"size_in_bytes",
-                                      #"status_codes","status_codes_google","status_codes_google_smartphone","status_codes_google_web_search"
-                                      "seo_visits_device_desktop","seo_visits_device_mobile","seo_visits_google","seo_visits_google_device_desktop","seo_visits_google_device_mobile",
-                                      "seo_visits"
-                                     ),
-                          export="true"))
+  jsonbody <- jsonlite::toJSON(list("fields"=fieldsList,export=TRUE))
 
   reply <- RCurl::postForm(pageAPI,
                     .opts=list(httpheader=hdr, postfields=jsonbody),
@@ -80,4 +62,85 @@ listLogs <- function(projectId) {
   }
 
   return(csv)
+}
+
+
+#' List all available fields from logs
+#'
+#' @param projectId ID of your project
+#'
+#' @details
+#'
+#' ResCode
+#' 400 : Returned when the request has incompatible values or does not match the API specification.
+#' 401 : Returned when the request is not authenticated.
+#' 403 : Returned the current quota does not allow the action to be performed.
+#' 404 : Returned when any of resource(s) referred in the request is not found.
+#' 403 : Returned when the request is authenticated but the action is not allowed.
+#' 409 : Returned when the requested operation is not allowed for current state of the resource.
+#' 500 : Internal error
+#'
+#' @examples
+#' \dontrun{
+#' logsFields <- getFieldsLogs(YOURPROJECTID)
+#' }
+#'
+#' @return Character Array
+#' @author Vincent Terrasi
+getPageFieldsLogs <- function(projectId) {
+
+  KEY <- getOption('oncrawl_token')
+  DEBUG <- getOption('oncrawl_debug')
+  API <- getOption('oncrawl_api')
+
+  if(nchar(KEY)<=10) {
+    testConf <- initAPI()
+    if(testConf!="ok") stop("No API Key detected")
+  }
+
+  curl <- RCurl::getCurlHandle()
+
+  hdr  <- c(Accept="application/json"
+            ,Authorization=paste("Bearer",KEY)
+  )
+
+  #data/project/", projectId,"/log_monitoring/pages
+  pageAPI <- paste0(API,"data/project/", projectId,"/log_monitoring/events/fields", sep = "")
+
+  reply <- RCurl::getURL(pageAPI,
+                         httpheader = hdr,
+                         curl = curl,
+                         verbose = DEBUG)
+
+  info <- RCurl::getCurlInfo(curl)
+
+  if (info$response.code==200) {
+    # return ok if response.code==200
+    res <- jsonlite::fromJSON(reply)
+
+    # TODO :regex_to_hide_fields = "(_hash|google|gsc_|ati_|adobe|seo_)"
+
+    fieldsDF <- data.frame(name=res$fields$name
+                           ,type=res$fields$type
+                           ,can_display=res$fields$can_display
+                           ,can_filter=res$fields$can_filter
+                           ,arity=res$fields$arity
+                           ,stringsAsFactors=FALSE)
+
+    # rmove : filter not found: inactive_indexable_pages_in_structure_logs']}
+
+    fieldsDF <- dplyr::filter(fieldsDF
+                              , .data$can_display == TRUE
+    )
+
+    fieldsDF <- dplyr::select(fieldsDF,.data$name)
+
+    return(fieldsDF$name)
+
+  } else {
+    # return error if response.code!=200
+    warning(reply)
+  }
+
+
 }

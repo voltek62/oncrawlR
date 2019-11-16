@@ -44,7 +44,7 @@ listPages <- function(crawlId) {
             ,Authorization=paste("Bearer",KEY)
   )
 
-  jsonbody <- jsonlite::toJSON(list("fields"=fieldsList,export="true"))
+  jsonbody <- jsonlite::toJSON(list("fields"=fieldsList,export=TRUE))
 
   reply <- RCurl::postForm(pageAPI,
                     .opts=list(httpheader=hdr, postfields=jsonbody),
@@ -134,22 +134,19 @@ getPageFields <- function(crawlId) {
     res <- jsonlite::fromJSON(reply)
 
     # disable some fields : high volume, ..
-    fieldsDF <- data.frame(name=res$fields$name,display=res$fields$can_display, stringsAsFactors=FALSE)
+    fieldsDF <- data.frame(name=res$fields$name
+                           ,type=res$fields$type
+                           ,can_display=res$fields$can_display
+                           ,can_filter=res$fields$can_filter
+                           ,arity=res$fields$arity
+                           ,stringsAsFactors=FALSE)
 
-    fieldsDF <- dplyr::filter(fieldsDF, .data$display==TRUE)
-
-    fieldsDF <- dplyr::filter(fieldsDF,
-                              !grepl("url_",.data$name)
-                            & !grepl("hreflang_",.data$name)
-                            & !grepl("ngrams",.data$name)
-                            & !grepl("ogp_",.data$name)
-                            & !grepl("parsed_html",.data$name)
-                            & !grepl("sources",.data$name)
-                            & !grepl("text_to_code",.data$name)
-							& !grepl("_types",.data$name)
-                            & !grepl("_hash",.data$name)
-                            & !grepl("twc_",.data$name)
-                            & !grepl("watched_",.data$name) )
+    fieldsDF <- dplyr::filter(fieldsDF
+                              , .data$can_display == TRUE
+                              , .data$can_filter == TRUE
+                              , .data$type != "object"
+                              , .data$arity != "many"
+                              )
 
     fieldsDF <- dplyr::select(fieldsDF,.data$name)
 
