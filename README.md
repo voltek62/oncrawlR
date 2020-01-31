@@ -253,6 +253,39 @@ oncrawlCreateDashboard(res, "metricSEO.png", 500, ".")
 
 ```
 
+### 8. Get aggregations
+
+```
+# Pages in structure
+jsonTxt = '{"aggs": [{"oql": {"field": ["fetched", "equals", "true"]}}]}'
+agg <- listPagesAggs(crawlId, jsonTxt)
+page_crawled = agg[[1]]$rows
+
+# Compliant pages
+jsonTxt = '{"aggs": [{"oql": {
+  "and": [
+    {"field": ["meta_robots_index", "equals", "true"]},
+    {"field": ["status_code_range", "equals", "ok"]},
+    {"field": ["canonical_evaluation", "not_equals", "not_matching"]},
+    {"field": ["parsed_html", "equals", "true"]}
+    ]
+}}]}'
+agg <- listPagesAggs(crawlId, jsonTxt)
+compliant = agg[[1]]$rows
+
+# Crawled Pages by Google Ratio
+jsonTxt = '{"aggs": [{"oql": {"field": ["crawled_by_googlebot", "equals", "true"]}}]}'
+agg <- listPagesAggs(crawlId, jsonTxt)
+page_crawed_google = setValue(agg[[1]]$rows)
+crawl_ratio = page_crawed_google / page_crawled
+
+# Hits by Google
+jsonTxt = '{"aggs": [{"oql": {"field": ["crawled_by_googlebot", "equals", "true"]}, "value": "googlebot_hits:sum"}]}'
+agg <- listPagesAggs(crawlId, jsonTxt)
+hits <- agg[[1]]$rows
+
+```
+
 ## Feedbacks
 Questions and feedbacks welcome!
 

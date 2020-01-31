@@ -142,5 +142,4 @@ getPageFieldsLogs <- function(projectId) {
     warning(reply)
   }
 
-
 }
